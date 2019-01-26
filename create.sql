@@ -34,9 +34,14 @@ CREATE TABLE MovieGenre (
   genre VARCHAR(20)
 );
 
+CREATE TABLE MovieDirector (
+  mid INT,
+  did INT
+);
+
 CREATE TABLE MovieActor (
-  mid INT PRIMARY KEY,
-  aid INT PRIMARY KEY,
+  mid INT,
+  aid INT,
   role VARCHAR(50)
 );
 
