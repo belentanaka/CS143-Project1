@@ -15,13 +15,17 @@
   $query = $_GET["query"];
   echo $_GET["query"];
   $rs = mysql_query($query, $db_connection);
-  print "<table style='width:100%'>";
+  print "<table border='1'>";
+  for($i = 0; $i < mysql_num_fields($rs); $i++) {
+    $field_info = mysql_fetch_field($rs, $i);
+    print "<th>{$field_info->name}</th>";
+  }
   while($row = mysql_fetch_row($rs)) {
-      print "<tr>";
-      foreach($row as $value) {
-        print "<td>$value</td>";
-      }
-      print "</tr>";
+    print "<tr>";
+    foreach($row as $value) {
+      print "<td>$value</td>";
+    }
+    print "</tr>";
   }
   print "</table>";
   mysql_close($db_connection);
