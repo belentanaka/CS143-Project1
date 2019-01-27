@@ -16,7 +16,7 @@ CREATE TABLE Actor (
 );
 
 CREATE TABLE Sales (
-  mid INT PRIMARY KEY,
+  mid INT FOREIGN KEY,
   ticketsSold INT,
   totalIncome INT
 );
@@ -30,32 +30,32 @@ CREATE TABLE Director (
 );
 
 CREATE TABLE MovieGenre (
-  mid INT PRIMARY KEY,
+  mid INT FOREIGN KEY,
   genre VARCHAR(20)
 );
 
 CREATE TABLE MovieDirector (
-  mid INT,
-  did INT
+  mid INT FOREIGN KEY,
+  did INT FOREIGN KEY
 );
 
 CREATE TABLE MovieActor (
-  mid INT,
-  aid INT,
+  mid INT FOREIGN KEY,
+  aid INT FOREIGN KEY,
   role VARCHAR(50)
 );
 
 CREATE TABLE MovieRating (
-  mid INT PRIMARY KEY,
+  mid INT FOREIGN KEY,
   imdb INT,
   rot INT
 );
 
 CREATE TABLE Review (
-  name VARCHAR(20) NOT NULL,
+  name VARCHAR(20),
   time TIMESTAMP,
-  mid INT NOT NULL,
-  rating INT NOT NULL,
+  mid INT FOREIGN KEY,
+  rating INT,
   comment VARCHAR(500)
 );
 

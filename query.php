@@ -15,7 +15,7 @@
   $query = $_GET["query"];
   echo $_GET["query"];
   $rs = mysql_query($query, $db_connection);
-  print "<table>";
+  print "<table style='width:100%'>";
   while($row = mysql_fetch_row($rs)) {
       print "<tr>";
       foreach($row as $value) {
