@@ -6,7 +6,7 @@ CREATE TABLE Movie (
   year INT,
   rating VARCHAR(10),
   company VARCHAR(50),
-  CONSTRAINT CHK_MovieYear CHECK (year>=1888),
+  CONSTRAINT CHK_MovieYear CHECK (year>=1888)
 )ENGINE = INNODB;
 
 -- PRIMARY KEY: Every actor has a unique ID
@@ -78,18 +78,18 @@ CREATE TABLE MovieRating (
 
 -- FOREIGN KEY (mid): mid refers to primary key in Movie
 CREATE TABLE Review (
-  name VARCHAR(20) NOT NULL,
-  time TIMESTAMP NOT NULL,
-  mid INT NOT NULL,
-  rating INT NOT NULL,
+  name VARCHAR(20),
+  time TIMESTAMP,
+  mid INT,
+  rating INT,
   comment VARCHAR(500),
   FOREIGN KEY (mid) REFERENCES Movie(id)
 )ENGINE = INNODB;
 
 CREATE TABLE MaxPersonID (
-  id INT NOT NULL
+  id INT
 )ENGINE = INNODB;
 
 CREATE TABLE MaxMovieID (
-  id INT NOT NULL
+  id INT
 )ENGINE = INNODB;
