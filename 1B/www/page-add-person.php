@@ -1,3 +1,4 @@
+<div class="content">
 <h2>Insert New Actor Or Director</h2>
 
 <form method="GET">
@@ -77,3 +78,4 @@
     mysql_close($db_connection);
   }
 ?>
+</div>

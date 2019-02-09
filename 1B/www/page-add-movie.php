@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html>
-<body>
+<div class="content">
 
 <h2>Insert New Movie</h2>
 
@@ -56,15 +54,44 @@
 </form>
 
 <?php
-  $db_connection = mysql_connect("localhost", "cs143", "");
-  mysql_select_db("CS143", $db_connection);
   $title = $_GET["title"];
-  $year = $_GET["year"];
-  $rating = $_GET["rating"];
-  $genre = $_GET["genre"];
-  $company = $_GET["company"];
-  $query;
-  $rs = mysql_query($query, $db_connection);
-  mysql_close($db_connection);
+
+  if(isset($title)) {
+    $db_connection = mysql_connect("localhost", "cs143", "");
+    mysql_select_db("CS143", $db_connection);
+
+    $rs = mysql_query("SELECT id FROM MaxMovieID");
+    $row = mysql_fetch_row($rs);
+    foreach($row as $value) {
+      $id = (int)$value + 1;
+    }
+
+    $year = $_GET["year"];
+    $rating = $_GET["rating"];
+    $genre = $_GET["genre"];
+    $company = $_GET["company"];
+
+    $query = "INSERT INTO Movie VALUES($id, '$title', '$year', '$rating', '$company')";
+
+    $rs = mysql_query($query, $db_connection);
+
+    if(!$rs) {
+      echo "ERROR: Failed To Add Movie";
+      return;
+    }
+
+    $query = "INSERT INTO MovieGenre VALUES($id, '$genre')";
+
+    $rs = mysql_query($query, $db_connection);
+
+    if($rs) {
+      echo "Successfully Added Movie!";
+    }
+    else {
+      echo "ERROR: Failed To Add Movie";
+    }
+
+    mysql_close($db_connection);
+  }
 ?>
-</html>
+</div>
