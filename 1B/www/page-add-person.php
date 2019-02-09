@@ -40,20 +40,40 @@
 </form>
 
 <?php
-  $db_connection = mysql_connect("localhost", "cs143", "");
-  mysql_select_db("CS143", $db_connection);
   $type = $_GET["type"];
-  $first = $_GET["first"];
-  $last = $_GET["last"];
-  $sex = $_GET["sex"];
-  $dob = $_GET["dob"];
-  $dod = $_GET["dod"];
-  if($type == "Actor") {
-    $query = "INSERT INTO $type VALUES()
-  }
-  else {
 
+  if(isset($type)) {
+    $db_connection = mysql_connect("localhost", "cs143", "");
+    mysql_select_db("CS143", $db_connection);
+
+    $rs = mysql_query("SELECT id FROM MaxPersonID");
+    $row = mysql_fetch_row($rs);
+    foreach($row as $value) {
+      $id = (int)$value + 1;
+    }
+
+    $first = $_GET["first"];
+    $last = $_GET["last"];
+    $sex = $_GET["sex"];
+    $dob = $_GET["dob"];
+    $dod = $_GET["dod"];
+
+    if($type == "Actor") {
+      $query = "INSERT INTO $type VALUES($id, '$last', '$first', '$sex', '$dob', '$dod')";
+    }
+    else {
+      $query = "INSERT INTO $type VALUES($id, '$last', '$first', '$dob', '$dod')";
+    }
+
+    $rs = mysql_query($query, $db_connection);
+
+    if($rs) {
+      echo "Successfully Added $type!";
+    }
+    else {
+      echo "ERROR: Failed To Add $type";
+    }
+
+    mysql_close($db_connection);
   }
-  $rs = mysql_query($query, $db_connection);
-  mysql_close($db_connection);
 ?>
