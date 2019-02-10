@@ -39,6 +39,40 @@ Release Year:
   }
 ?><br />
 
+Director: 
+<?php 
+  $id = $_GET["id"];
+  $query = "SELECT CONCAT(Director.first,\" \", Director.last) 
+			FROM Director,MovieDirector 
+			WHERE Director.id = MovieDirector.did AND MovieDirector.mid = ".$id.";";
+  $query = $query.$id;
+  $query = $query.";";
+  $rs = mysql_query($query, $db_connection);
+  
+  while($row = mysql_fetch_row($rs)) {
+    foreach($row as $value) {
+      print "<td>$value</td>";
+    }
+  }
+?><br />
+
+Director: 
+<?php 
+  $id = $_GET["id"];
+  $query = "SELECT genre 
+			FROM MovieGenre 
+			WHERE MovieGenre.mid = ".$id.";";
+  $query = $query.$id;
+  $query = $query.";";
+  $rs = mysql_query($query, $db_connection);
+  
+  while($row = mysql_fetch_row($rs)) {
+    foreach($row as $value) {
+      print "<td>$value</td>";
+    }
+  }
+?><br />
+
 MPAA Rating: 
 <?php 
   $id = $_GET["id"];
