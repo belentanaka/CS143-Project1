@@ -34,7 +34,7 @@
 <p><b>Roles</b><br />
 <?php
   $id = $_GET["id"];
-  $query = "SELECT Movie.title, MovieActor.role 
+  $query = "SELECT MovieActor.mid,Movie.title, MovieActor.role 
 			FROM Movie,MovieActor 
 			WHERE Movie.id = MovieActor.mid AND MovieActor.aid = ".$id.";";
   
