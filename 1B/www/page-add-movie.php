@@ -84,6 +84,13 @@
 
     $rs = mysql_query($query, $db_connection);
 
+    if(!$rs) {
+      echo "ERROR: Failed To Add Movie";
+      return;
+    }
+
+    $rs = mysql_query("UPDATE MaxMovieID SET id = $id", $db_connection);
+
     if($rs) {
       echo "Successfully Added Movie!";
     }
