@@ -20,6 +20,7 @@
       mysql_close($db_connection);
     ?>
   </select>
+  </p>
 
   <p><b>Movie</b><br />
   <select name="mid">
@@ -35,6 +36,7 @@
       mysql_close($db_connection);
     ?>
   </select>
+  </p>
 
   <p><b>Role</b><br />
   <INPUT TYPE="text" NAME="role" SIZE=30 MAXLENGTH=50>
