@@ -1,5 +1,9 @@
 <h2>Actor Information</h2>
 
+<form method="GET">
+  <input type="hidden" name="page" value="browse">
+</form>
+
 <?php
   $db_connection = mysql_connect("localhost", "cs143", "");
   mysql_select_db("CS143", $db_connection);
@@ -37,7 +41,7 @@
   $query = "SELECT MovieActor.mid,Movie.title, MovieActor.role 
 			FROM Movie,MovieActor 
 			WHERE Movie.id = MovieActor.mid AND MovieActor.aid = ".$id.";";
-  
+  $mid = 
   $rs = mysql_query($query, $db_connection);
   print "<table border='1'>";
   for($i = 0; $i < mysql_num_fields($rs); $i++) {
@@ -47,7 +51,7 @@
   while($row = mysql_fetch_row($rs)) {
     print "<tr>";
     foreach($row as $value) {
-      print "<td>$value</td>";
+      print "<td><a href=\"page-browse-movie.php?=$row[0]\">$value</a></td>";
     }
     print "</tr>";
   }
