@@ -1,16 +1,10 @@
 <h2>Movie Information</h2>
 
-<form method="GET">
-  <input type="hidden" name="page" value="browse">
-</form
-
-<?php
-  $db_connection = mysql_connect("localhost", "cs143", "");
-  mysql_select_db("CS143", $db_connection);
-?>
 
 <p>Title:
 <?php 
+  $db_connection = mysql_connect("localhost", "cs143", "");
+  mysql_select_db("CS143", $db_connection);
   $id = $_GET["id"];
   $query = "SELECT title FROM Movie WHERE id = ";
   $query = $query.$id;
@@ -26,6 +20,8 @@
 
 Release Year: 
 <?php 
+  $db_connection = mysql_connect("localhost", "cs143", "");
+  mysql_select_db("CS143", $db_connection);
   $id = $_GET["id"];
   $query = "SELECT year FROM Movie WHERE id = ";
   $query = $query.$id;
@@ -41,6 +37,8 @@ Release Year:
 
 Director: 
 <?php 
+  $db_connection = mysql_connect("localhost", "cs143", "");
+  mysql_select_db("CS143", $db_connection);
   $id = $_GET["id"];
   $query = "SELECT CONCAT(Director.first,\" \", Director.last) 
 			FROM Director,MovieDirector 
@@ -58,6 +56,8 @@ Director:
 
 Director: 
 <?php 
+  $db_connection = mysql_connect("localhost", "cs143", "");
+  mysql_select_db("CS143", $db_connection);
   $id = $_GET["id"];
   $query = "SELECT genre 
 			FROM MovieGenre 
@@ -75,6 +75,8 @@ Director:
 
 MPAA Rating: 
 <?php 
+  $db_connection = mysql_connect("localhost", "cs143", "");
+  mysql_select_db("CS143", $db_connection);
   $id = $_GET["id"];
   $query = "SELECT rating FROM Movie WHERE id = ";
   $query = $query.$id;
@@ -90,6 +92,8 @@ MPAA Rating:
 
 Production Company: 
 <?php 
+  $db_connection = mysql_connect("localhost", "cs143", "");
+  mysql_select_db("CS143", $db_connection);
   $id = $_GET["id"];
   $query = "SELECT company FROM Movie WHERE id = ";
   $query = $query.$id;
@@ -116,6 +120,8 @@ ID:
 
 <p><b>Cast</b><br />
 <?php
+  $db_connection = mysql_connect("localhost", "cs143", "");
+  mysql_select_db("CS143", $db_connection);
   $id = $_GET["id"];
   $query = "SELECT MovieActor.aid, CONCAT(Actor.first,\" \", Actor.last) AS name, MovieActor.role 
 			FROM Movie,MovieActor 
@@ -146,6 +152,9 @@ ID:
 
 Average user score:
 <?php
+  echo " ";
+  $db_connection = mysql_connect("localhost", "cs143", "");
+  mysql_select_db("CS143", $db_connection);
   $id = $_GET["id"];
   $query = "SELECT AVG(rating) FROM Review WHERE mid = ";
   $query = $query.$id;
@@ -157,9 +166,13 @@ Average user score:
       print "<td>$value</td>";
     }
   }
+  mysql_close($db_connection);
 ?>
  based on reviews of
 <?php
+  echo " ";
+  $db_connection = mysql_connect("localhost", "cs143", "");
+  mysql_select_db("CS143", $db_connection);
   $id = $_GET["id"];
   $query = "SELECT COUNT(rating) FROM Review WHERE mid = ";
   $query = $query.$id;
@@ -171,10 +184,13 @@ Average user score:
       print "<td>$value</td>";
     }
   }
+  mysql_close($db_connection);
 ?>
  users<br />
 
 <?php
+  $db_connection = mysql_connect("localhost", "cs143", "");
+  mysql_select_db("CS143", $db_connection);
   $id = $_GET["id"];
   $query = "SELECT name,time,rating,comment 
 			FROM Review 
@@ -194,8 +210,5 @@ Average user score:
     print "</tr>";
   }
   print "</table>";
-?></p>
-
-<?php
   mysql_close($db_connection);
-?>
+?></p>
