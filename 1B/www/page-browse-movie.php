@@ -16,6 +16,7 @@
       print "<td>$value</td>";
     }
   }
+  mysql_close($db_connection);
 ?><br />
 
 Release Year: 
@@ -33,6 +34,7 @@ Release Year:
       print "<td>$value</td>";
     }
   }
+  mysql_close($db_connection);
 ?><br />
 
 Director: 
@@ -52,6 +54,7 @@ Director:
       print "<td>$value</td>";
     }
   }
+  mysql_close($db_connection);
 ?><br />
 
 Director: 
@@ -71,6 +74,7 @@ Director:
       print "<td>$value</td>";
     }
   }
+  mysql_close($db_connection);
 ?><br />
 
 MPAA Rating: 
@@ -88,6 +92,7 @@ MPAA Rating:
       print "<td>$value</td>";
     }
   }
+  mysql_close($db_connection);
 ?><br />
 
 Production Company: 
@@ -105,6 +110,7 @@ Production Company:
       print "<td>$value</td>";
     }
   }
+  mysql_close($db_connection);
 ?><br />
 
 ID: 
@@ -141,6 +147,8 @@ ID:
     print "</tr>";
   }
   print "</table>";
+  
+  mysql_close($db_connection);
 ?>
 <br />
 
