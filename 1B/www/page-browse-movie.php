@@ -1,5 +1,9 @@
 <h2>Movie Information</h2>
 
+<form method="GET">
+  <input type="hidden" name="page" value="browse">
+</form
+
 <?php
   $db_connection = mysql_connect("localhost", "cs143", "");
   mysql_select_db("CS143", $db_connection);
