@@ -1,222 +1,119 @@
+<div class="content">
+
 <h2>Movie Information</h2>
 
-
-<p>Title:
-<?php 
-  $db_connection = mysql_connect("localhost", "cs143", "");
-  mysql_select_db("CS143", $db_connection);
-  $id = $_GET["id"];
-  $query = "SELECT title FROM Movie WHERE id = ";
-  $query = $query.$id;
-  $query = $query.";";
-  $rs = mysql_query($query, $db_connection);
-  
-  while($row = mysql_fetch_row($rs)) {
-    foreach($row as $value) {
-      print "<td>$value</td>";
-    }
-  }
-  mysql_close($db_connection);
-?><br />
-
-Release Year: 
-<?php 
-  $db_connection = mysql_connect("localhost", "cs143", "");
-  mysql_select_db("CS143", $db_connection);
-  $id = $_GET["id"];
-  $query = "SELECT year FROM Movie WHERE id = ";
-  $query = $query.$id;
-  $query = $query.";";
-  $rs = mysql_query($query, $db_connection);
-  
-  while($row = mysql_fetch_row($rs)) {
-    foreach($row as $value) {
-      print "<td>$value</td>";
-    }
-  }
-  mysql_close($db_connection);
-?><br />
-
-Director: 
-<?php 
-  $db_connection = mysql_connect("localhost", "cs143", "");
-  mysql_select_db("CS143", $db_connection);
-  $id = $_GET["id"];
-  $query = "SELECT CONCAT(Director.first,\" \", Director.last) 
-			FROM Director,MovieDirector 
-			WHERE Director.id = MovieDirector.did AND MovieDirector.mid = ".$id.";";
-  $query = $query.$id;
-  $query = $query.";";
-  $rs = mysql_query($query, $db_connection);
-  
-  while($row = mysql_fetch_row($rs)) {
-    foreach($row as $value) {
-      print "<td>$value</td>";
-    }
-  }
-  mysql_close($db_connection);
-?><br />
-
-Director: 
-<?php 
-  $db_connection = mysql_connect("localhost", "cs143", "");
-  mysql_select_db("CS143", $db_connection);
-  $id = $_GET["id"];
-  $query = "SELECT genre 
-			FROM MovieGenre 
-			WHERE MovieGenre.mid = ".$id.";";
-  $query = $query.$id;
-  $query = $query.";";
-  $rs = mysql_query($query, $db_connection);
-  
-  while($row = mysql_fetch_row($rs)) {
-    foreach($row as $value) {
-      print "<td>$value</td>";
-    }
-  }
-  mysql_close($db_connection);
-?><br />
-
-MPAA Rating: 
-<?php 
-  $db_connection = mysql_connect("localhost", "cs143", "");
-  mysql_select_db("CS143", $db_connection);
-  $id = $_GET["id"];
-  $query = "SELECT rating FROM Movie WHERE id = ";
-  $query = $query.$id;
-  $query = $query.";";
-  $rs = mysql_query($query, $db_connection);
-  
-  while($row = mysql_fetch_row($rs)) {
-    foreach($row as $value) {
-      print "<td>$value</td>";
-    }
-  }
-  mysql_close($db_connection);
-?><br />
-
-Production Company: 
-<?php 
-  $db_connection = mysql_connect("localhost", "cs143", "");
-  mysql_select_db("CS143", $db_connection);
-  $id = $_GET["id"];
-  $query = "SELECT company FROM Movie WHERE id = ";
-  $query = $query.$id;
-  $query = $query.";";
-  $rs = mysql_query($query, $db_connection);
-  
-  while($row = mysql_fetch_row($rs)) {
-    foreach($row as $value) {
-      print "<td>$value</td>";
-    }
-  }
-  mysql_close($db_connection);
-?><br />
-
-ID: 
-<?php 
-  $id = $_GET["id"];
-  echo $id;
-?>
-<br />
-
-</p>
-
-<hr>
-
-<p><b>Cast</b><br />
 <?php
-  $db_connection = mysql_connect("localhost", "cs143", "");
-  mysql_select_db("CS143", $db_connection);
   $id = $_GET["id"];
-  $query = "SELECT MovieActor.aid, CONCAT(Actor.first,\" \", Actor.last) AS name, MovieActor.role 
-			FROM Movie,MovieActor 
-			WHERE Actor.id = MovieActor.aid AND MovieActor.mid = ".$id.";";
-  
-  $rs = mysql_query($query, $db_connection);
-  print "<table border='1'>";
-  for($i = 0; $i < mysql_num_fields($rs); $i++) {
-    $field_info = mysql_fetch_field($rs, $i);
-    print "<th>{$field_info->name}</th>";
-  }
-  while($row = mysql_fetch_row($rs)) {
-    print "<tr>";
-    foreach($row as $value) {
-      print "<td>$value</td>";
+  if(isset($id)) {
+    $db_connection = mysql_connect("localhost", "cs143", "");
+    mysql_select_db("CS143", $db_connection);
+
+    $query = "SELECT Movie.title, Movie.year, Movie.rating, Movie.company, MovieGenre.genre
+    FROM Movie, MovieGenre
+    WHERE Movie.id=$id AND Movie.id=MovieGenre.mid";
+
+    $rs = mysql_query($query, $db_connection);
+    $row = mysql_fetch_row($rs);
+    $genre = array_pop($row);
+    $company = array_pop($row);
+    $rating = array_pop($row);
+    $year = array_pop($row);
+    $title = array_pop($row);
+
+    print "Title: $title <br />";
+    print "Year: $year <br />";
+    print "Rating: $rating <br />";
+    print "Company: $company <br />";
+    print "Genre: $genre <br />";
+
+    print "<hr>";
+
+    print "<p><b>Actors and Roles</b><br /></p>";
+
+    $query = "SELECT DISTINCT MovieActor.aid AS id, CONCAT(Actor.first, ' ', Actor.last) AS title, MovieActor.role AS role
+    FROM MovieActor, Actor
+    WHERE MovieActor.mid=$id AND MovieActor.aid=Actor.id";
+
+    $rs = mysql_query($query, $db_connection);
+    print "<table border='1'>";
+    for($i = 0; $i < mysql_num_fields($rs); $i++) {
+      $field_info = mysql_fetch_field($rs, $i);
+      print "<th>{$field_info->name}</th>";
     }
-    print "</tr>";
+    while($row = mysql_fetch_row($rs)) {
+      print "<tr>";
+      $first = 1;
+      foreach($row as $value) {
+        if($first) {
+          print "<td><a href='index.php?page=browse-actor&id=$value'>$value</a></td>";
+          $first = 0;
+        }
+        else if(is_null($value)) {
+          print "<td>NULL</td>";
+        }
+        else {
+          print "<td>$value</td>";
+        }
+      }
+      print "</tr>";
+    }
+    print "</table> <br />";
+
+    print "<hr>";
+
+    print "<p><b>Comments</b><br /></p>";
+
+    print "<form method='GET'>";
+    print "<input type='hidden' name='page' value='add-comment'>";
+    print "<input type='hidden' name='mid' value=$id>";
+    print "<input type='submit' value='Add Comment'>";
+    print "</form>";
+
+    $query = "SELECT COUNT(*)
+    FROM Review
+    WHERE Review.mid=$id";
+
+    $rs = mysql_query($query, $db_connection);
+    $row = mysql_fetch_row($rs);
+    $count = array_pop($row);
+
+    if($count == 0) {
+      print "<p>No comments yet.</p>";
+    }
+    else {
+      $query = "SELECT AVG(rating)
+      FROM Review
+      WHERE Review.mid=$id";
+
+      $rs = mysql_query($query, $db_connection);
+      $row = mysql_fetch_row($rs);
+      $avgscore = array_pop($row);
+
+      print "<p>Average user score: $avgscore (Based on reviews of $count users)</p>";
+
+      $query = "SELECT name, time, rating, comment
+      FROM Review
+      WHERE mid=$id";
+
+      $rs = mysql_query($query, $db_connection);
+      print "<table border='1'>";
+      for($i = 0; $i < mysql_num_fields($rs); $i++) {
+        $field_info = mysql_fetch_field($rs, $i);
+        print "<th>{$field_info->name}</th>";
+      }
+      while($row = mysql_fetch_row($rs)) {
+        print "<tr>";
+        $first = 1;
+        foreach($row as $value) {
+          print "<td>$value</td>";
+        }
+        print "</tr>";
+      }
+      print "</table>";
+    }
+
+    mysql_close($db_connection);
   }
-  print "</table>";
-  
-  mysql_close($db_connection);
 ?>
-<br />
 
-</p>
-
-<hr>
-
-<p><b>User Comments</b><br />
-
-Average user score:
-<?php
-  echo " ";
-  $db_connection = mysql_connect("localhost", "cs143", "");
-  mysql_select_db("CS143", $db_connection);
-  $id = $_GET["id"];
-  $query = "SELECT AVG(rating) FROM Review WHERE mid = ";
-  $query = $query.$id;
-  $query = $query.";";
-  $rs = mysql_query($query, $db_connection);
-  
-  while($row = mysql_fetch_row($rs)) {
-    foreach($row as $value) {
-      print "<td>$value</td>";
-    }
-  }
-  mysql_close($db_connection);
-?>
- based on reviews of
-<?php
-  echo " ";
-  $db_connection = mysql_connect("localhost", "cs143", "");
-  mysql_select_db("CS143", $db_connection);
-  $id = $_GET["id"];
-  $query = "SELECT COUNT(rating) FROM Review WHERE mid = ";
-  $query = $query.$id;
-  $query = $query.";";
-  $rs = mysql_query($query, $db_connection);
-  
-  while($row = mysql_fetch_row($rs)) {
-    foreach($row as $value) {
-      print "<td>$value</td>";
-    }
-  }
-  mysql_close($db_connection);
-?>
- users<br />
-
-<?php
-  $db_connection = mysql_connect("localhost", "cs143", "");
-  mysql_select_db("CS143", $db_connection);
-  $id = $_GET["id"];
-  $query = "SELECT name,time,rating,comment 
-			FROM Review 
-			WHERE mid = ".$id.";";
-  
-  $rs = mysql_query($query, $db_connection);
-  print "<table border='1'>";
-  for($i = 0; $i < mysql_num_fields($rs); $i++) {
-    $field_info = mysql_fetch_field($rs, $i);
-    print "<th>{$field_info->name}</th>";
-  }
-  while($row = mysql_fetch_row($rs)) {
-    print "<tr>";
-    foreach($row as $value) {
-      print "<td>$value</td>";
-    }
-    print "</tr>";
-  }
-  print "</table>";
-  mysql_close($db_connection);
-?></p>
+</div>

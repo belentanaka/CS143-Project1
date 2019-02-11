@@ -18,7 +18,13 @@
       while($row = mysql_fetch_row($rs)) {
         $title = array_pop($row);
         $id = array_pop($row);
-        print "<option value='$id'>$title";
+        $mid = $_GET["mid"];
+        if(isset($mid) and $mid == $id) {
+          print "<option value='$id' selected='selected'>$title";
+        }
+        else {
+          print "<option value='$id'>$title";
+        }
       }
       mysql_close($db_connection);
     ?>
@@ -51,16 +57,31 @@
     $db_connection = mysql_connect("localhost", "cs143", "");
     mysql_select_db("CS143", $db_connection);
 
+    if($name == "") {
+      $name = "NULL";
+    }
+    else {
+      $name = "'$name'";
+    }
+
     $mid = $_GET["mid"];
+
     $rating = $_GET["rating"];
+
     $comment = $_GET["comment"];
+    if($comment == "") {
+      $comment = "NULL";
+    }
+    else {
+      $comment = "'$comment'";
+    }
 
     $rs = mysql_query("SELECT NOW()", $db_connection);
     while($row = mysql_fetch_row($rs)) {
       $timestamp = array_pop($row);
     }
 
-    $query = "INSERT INTO Review VALUES('$name', '$timestamp', $mid, $rating, '$comment')";
+    $query = "INSERT INTO Review VALUES($name, '$timestamp', $mid, $rating, $comment)";
 
     $rs = mysql_query($query, $db_connection);
 

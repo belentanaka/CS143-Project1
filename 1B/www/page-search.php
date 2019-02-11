@@ -9,7 +9,7 @@
   <INPUT TYPE="text" NAME="search" SIZE=50 >
   </p>
 
-  <input type="submit" value="Submit" />
+  <input type="submit" value="Search" />
 </form>
 
 <?php
@@ -20,9 +20,7 @@
 
     $words = explode(' ', $search);
 
-    print "<p><b>Actor Results</b><br />";
-
-    $query = "SELECT id, CONCAT(first, ' ', last) AS name, dob, dod FROM Actor WHERE ";
+    $query = "SELECT DISTINCT id, CONCAT(first, ' ', last) AS name, dob, dod FROM Actor WHERE ";
 
     for($i = 0; $i < count($words); $i++) {
       $word = $words[$i];
@@ -31,6 +29,8 @@
         $query .= " AND ";
       }
     }
+
+    print "<p><b>Actor Results</b><br /></p>";
 
     $rs = mysql_query($query, $db_connection);
     print "<table border='1'>";
@@ -43,7 +43,7 @@
       $first = 1;
       foreach($row as $value) {
         if($first) {
-          print "<td><a href='index.php?page=browse-actor?id=$value'>$value</a></td>";
+          print "<td><a href='index.php?page=browse-actor&id=$value'>$value</a></td>";
           $first = 0;
         }
         else if(is_null($value)) {
@@ -57,11 +57,13 @@
     }
     print "</table>";
 
+    print "<br />";
+
     print "<hr>";
 
-    print "<p><b>Movie Results</b><br />";
+    print "<p><b>Movie Results</b><br /></p>";
 
-    $query = "SELECT id, title, year FROM Movie WHERE ";
+    $query = "SELECT DISTINCT id, title, year FROM Movie WHERE ";
 
     for($i = 0; $i < count($words); $i++) {
       $word = $words[$i];
@@ -82,7 +84,7 @@
       $first = 1;
       foreach($row as $value) {
         if($first) {
-          print "<td><a href='index.php?page=browse-movie?id=$value'>$value</a></td>";
+          print "<td><a href='index.php?page=browse-movie&id=$value'>$value</a></td>";
           $first = 0;
         }
         else if(is_null($value)) {

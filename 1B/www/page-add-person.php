@@ -54,16 +54,45 @@
     }
 
     $first = $_GET["first"];
-    $last = $_GET["last"];
-    $sex = $_GET["sex"];
-    $dob = $_GET["dob"];
-    $dod = $_GET["dod"];
-
-    if($type == "Actor") {
-      $query = "INSERT INTO $type VALUES($id, '$last', '$first', '$sex', '$dob', '$dod')";
+    if($first == "") {
+      $first = "NULL";
     }
     else {
-      $query = "INSERT INTO $type VALUES($id, '$last', '$first', '$dob', '$dod')";
+      $first = "'$first'";
+    }
+
+    $last = $_GET["last"];
+    if($last == "") {
+      $last = "NULL";
+    }
+    else {
+      $last = "'$last'";
+    }
+
+    $sex = $_GET["sex"];
+    $sex = "'$sex'";
+
+    $dob = $_GET["dob"];
+    if($dob == "") {
+      $dob = "NULL";
+    }
+    else {
+      $dob = "'$dob'";
+    }
+
+    $dod = $_GET["dod"];
+    if($dod == "") {
+      $dod = "NULL";
+    }
+    else {
+      $dod = "'$dod'";
+    }
+
+    if($type == "Actor") {
+      $query = "INSERT INTO $type VALUES($id, $last, $first, $sex, $dob, $dod)";
+    }
+    else {
+      $query = "INSERT INTO $type VALUES($id, $last, $first, $dob, $dod)";
     }
 
     $rs = mysql_query($query, $db_connection);

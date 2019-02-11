@@ -12,7 +12,7 @@
     }
     .sidebar {
         float: left;
-        width: 200px;
+        width: 250px;
         background-color: #ccc;
         padding: 10px;
         height: 100%;

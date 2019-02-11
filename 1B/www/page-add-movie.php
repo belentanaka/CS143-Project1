@@ -66,12 +66,33 @@
       $id = (int)$value + 1;
     }
 
-    $year = $_GET["year"];
-    $rating = $_GET["rating"];
-    $genre = $_GET["genre"];
-    $company = $_GET["company"];
+    if($title == "") {
+      $title = "NULL";
+    }
+    else {
+      $title = "'$title'";
+    }
 
-    $query = "INSERT INTO Movie VALUES($id, '$title', '$year', '$rating', '$company')";
+    $year = $_GET["year"];
+    if($year == "") {
+      $year = "NULL";
+    }
+
+    $rating = $_GET["rating"];
+    $rating = "'$rating'";
+
+    $genre = $_GET["genre"];
+    $genre = "'$genre'";
+
+    $company = $_GET["company"];
+    if($company == "") {
+      $company = "NULL";
+    }
+    else {
+      $company = "'$company'";
+    }
+
+    $query = "INSERT INTO Movie VALUES($id, $title, $year, $rating, $company)";
 
     $rs = mysql_query($query, $db_connection);
 

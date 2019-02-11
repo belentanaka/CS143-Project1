@@ -1,4 +1,4 @@
 <div class="content">
-<h1>RIIIIIIIIIDGE RAAACERRRR</h1>
+<h1>Weclome To IMDb III</h1>
 <p>I liek mobie</p>
 </div>
