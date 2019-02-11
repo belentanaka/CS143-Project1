@@ -53,6 +53,13 @@
       $id = (int)$value + 1;
     }
 
+    $rs = mysql_query("UPDATE MaxPersonID SET id = $id", $db_connection);
+
+    if(!$rs) {
+      echo "ERROR: Failed To Add $type";
+      return;
+    }
+
     $first = $_GET["first"];
     if($first == "") {
       $first = "NULL";
@@ -96,13 +103,6 @@
     }
 
     $rs = mysql_query($query, $db_connection);
-
-    if(!$rs) {
-      echo "ERROR: Failed To Add $type";
-      return;
-    }
-
-    $rs = mysql_query("UPDATE MaxPersonID SET id = $id", $db_connection);
 
     if($rs) {
       echo "Successfully Added $type!";

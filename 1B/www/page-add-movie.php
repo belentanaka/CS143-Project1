@@ -24,26 +24,26 @@
   </SELECT>
 
   <p><b>Genre</b><br />
-  <SELECT NAME="genre">
-  <OPTION SELECTED>Action
-  <OPTION>Adult
-  <OPTION>Adventure
-  <OPTION>Animation
-  <OPTION>Comedy
-  <OPTION>Crime
-  <OPTION>Documentary
-  <OPTION>Drama
-  <OPTION>Family
-  <OPTION>Fantasy
-  <OPTION>Horror
-  <OPTION>Musical
-  <OPTION>Mystery
-  <OPTION>Romance
-  <OPTION>Sci-fi
-  <OPTION>Short
-  <OPTION>Thriller
-  <OPTION>War
-  <OPTION>Western
+  <SELECT multiple="multiple" NAME="genre[]">
+  <OPTION SELECTED="selected" value="Action">Action
+  <OPTION value="Adult">Adult
+  <OPTION value="Adventure">Adventure
+  <OPTION value="Animation">Animation
+  <OPTION value="Comedy">Comedy
+  <OPTION value="Crime">Crime
+  <OPTION value="Documentary">Documentary
+  <OPTION value="Drama">Drama
+  <OPTION value="Family">Family
+  <OPTION value="Fantasy">Fantasy
+  <OPTION value="Horror">Horror
+  <OPTION value="Musical">Musical
+  <OPTION value="Mystery">Mystery
+  <OPTION value="Romance">Romance
+  <OPTION value="Sci-fi">Sci-fi
+  <OPTION value="Short">Short
+  <OPTION value="Thriller">Thriller
+  <OPTION value="War">War
+  <OPTION value="Western">Western
   </SELECT>
 
   <p><b>Production Company</b><br />
@@ -66,6 +66,13 @@
       $id = (int)$value + 1;
     }
 
+    $rs = mysql_query("UPDATE MaxMovieID SET id = $id", $db_connection);
+
+    if(!$rs) {
+      echo "ERROR: Failed To Add Movie";
+      return;
+    }
+
     if($title == "") {
       $title = "NULL";
     }
@@ -81,8 +88,7 @@
     $rating = $_GET["rating"];
     $rating = "'$rating'";
 
-    $genre = $_GET["genre"];
-    $genre = "'$genre'";
+    $genrelist = $_GET["genre"];
 
     $company = $_GET["company"];
     if($company == "") {
@@ -101,23 +107,18 @@
       return;
     }
 
-    $query = "INSERT INTO MovieGenre VALUES($id, '$genre')";
+    foreach($genrelist as $genre) {
+      $query = "INSERT INTO MovieGenre VALUES($id, '$genre')";
 
-    $rs = mysql_query($query, $db_connection);
+      $rs = mysql_query($query, $db_connection);
 
-    if(!$rs) {
-      echo "ERROR: Failed To Add Movie";
-      return;
+      if(!$rs) {
+        echo "ERROR: Failed To Add Movie";
+        return;
+      }
     }
 
-    $rs = mysql_query("UPDATE MaxMovieID SET id = $id", $db_connection);
-
-    if($rs) {
-      echo "Successfully Added Movie!";
-    }
-    else {
-      echo "ERROR: Failed To Add Movie";
-    }
+    echo "Successfully Added Movie!";
 
     mysql_close($db_connection);
   }

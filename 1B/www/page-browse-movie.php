@@ -8,13 +8,12 @@
     $db_connection = mysql_connect("localhost", "cs143", "");
     mysql_select_db("CS143", $db_connection);
 
-    $query = "SELECT Movie.title, Movie.year, Movie.rating, Movie.company, MovieGenre.genre
-    FROM Movie, MovieGenre
-    WHERE Movie.id=$id AND Movie.id=MovieGenre.mid";
+    $query = "SELECT title, year, rating, company
+    FROM Movie
+    WHERE Movie.id=$id";
 
     $rs = mysql_query($query, $db_connection);
     $row = mysql_fetch_row($rs);
-    $genre = array_pop($row);
     $company = array_pop($row);
     $rating = array_pop($row);
     $year = array_pop($row);
@@ -24,7 +23,41 @@
     print "Year: $year <br />";
     print "Rating: $rating <br />";
     print "Company: $company <br />";
-    print "Genre: $genre <br />";
+
+    $query = "SELECT CONCAT(Director.first, ' ', Director.last) as name
+    FROM Director, MovieDirector
+    WHERE MovieDirector.mid=$id AND MovieDirector.did=Director.id";
+
+    $rs = mysql_query($query, $db_connection);
+    $row = mysql_fetch_row($rs);
+    $name = array_pop($row);
+
+    print "Director: $name<br />";
+
+    $query = "SELECT genre
+    FROM MovieGenre
+    WHERE mid=$id";
+
+    $rs = mysql_query($query, $db_connection);
+    $genrelist = array();
+    while($row = mysql_fetch_row($rs)) {
+      $genre = array_pop($row);
+      array_push($genrelist, $genre);
+    }
+
+    $genre = "";
+    for($i = 0; $i < count($genrelist); $i++) {
+      $genre .= $genrelist[$i];
+      if($i + 1 != count($genrelist)) {
+        $genre .= ", ";
+      }
+    }
+
+    if($genre == "") {
+      $genre = "N/A";
+    }
+
+    print "Genre: $genre<br />";
 
     print "<hr>";
 
